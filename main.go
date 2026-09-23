@@ -143,18 +143,29 @@ func play3() {
 }
 
 func main() {
-	var a int //число сложности
+	for {
+		var a int //число сложности
 
-	fmt.Println("Выберите сложность:")
-	fmt.Println("Easy: 1 -50, 15 попыток")
-	fmt.Println("Medium: 2 -100, 10 попыток")
-	fmt.Println("Hard: 3 -200, 5 попыток")
+		fmt.Println("Выберите сложность:")
+		fmt.Println("🟢Easy: 1 -50, 15 попыток")
+		fmt.Println("🟡Medium: 2 -100, 10 попыток")
+		fmt.Println("🔴Hard: 3 -200, 5 попыток")
 
-	fmt.Scan(&a)
+		fmt.Scan(&a)
 
-	_, err := difficult(&a)
-	if err != nil {
-		fmt.Println(err)
-		return
+		_, err := difficult(&a)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		fmt.Println("Хотите продолжить игру? y/n")
+
+		var s string
+		fmt.Scan(&s)
+
+		if s == "y" {
+			continue
+		}
+		break
 	}
 }
