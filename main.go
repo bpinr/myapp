@@ -7,6 +7,13 @@ import (
 	"strconv"
 )
 
+const (
+	Green  = "\033[32m"
+	Yellow = "\033[33m"
+	Red    = "\033[31m"
+	Reset  = "\033[0m"
+)
+
 func parseNumber(input string) (int, error) {
 	return strconv.Atoi(input)
 }
@@ -48,7 +55,7 @@ func play1() {
 	z := rand.Intn(51)
 
 	fmt.Println("Начинается игра на уровне сложности 1. Количество попыток: 15")
-
+	var spisok []int
 	for i := 0; i < 15; i++ {
 
 		fmt.Println("Введите число")
@@ -63,6 +70,7 @@ func play1() {
 			i--
 			continue
 		}
+		spisok = append(spisok, num)
 
 		switch {
 		case z < num:
@@ -72,16 +80,22 @@ func play1() {
 			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
-			fmt.Println("Верно")
+			fmt.Println(Green + "Верно" + Reset)
+			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 			return
 		}
+
 	}
+	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
+	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+	fmt.Println("Ответ был: ", z)
 
 }
 
 func play2() {
 	z := rand.Intn(101)
 	fmt.Println("Начинается игра на уровне сложности 2. Количество попыток: 10")
+	var spisok []int
 	for i := 0; i < 10; i++ {
 		fmt.Println("Введите число")
 
@@ -94,7 +108,7 @@ func play2() {
 			i--
 			continue
 		}
-
+		spisok = append(spisok, num)
 		switch {
 		case z < num:
 			hint(z, num)
@@ -103,17 +117,20 @@ func play2() {
 			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
-			fmt.Println("Верно")
+			fmt.Println(Green + "Верно" + Reset)
+			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 			return
 		}
 	}
-
+	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
+	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+	fmt.Println("Ответ был: ", z)
 }
 
 func play3() {
 	z := rand.Intn(201)
 	fmt.Println("Начинается игра на уровне сложности 3. Количество попыток: 5")
-
+	var spisok []int
 	for i := 0; i < 5; i++ {
 		fmt.Println("Введите число")
 
@@ -126,7 +143,7 @@ func play3() {
 			i--
 			continue
 		}
-
+		spisok = append(spisok, num)
 		switch {
 		case z < num:
 			hint(z, num)
@@ -135,14 +152,18 @@ func play3() {
 			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
-			fmt.Println("Верно")
+			fmt.Println(Green + "Верно" + Reset)
+			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 			return
 		}
 	}
-
+	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
+	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+	fmt.Println("Ответ был: ", z)
 }
 
 func main() {
+
 	for {
 		var a int //число сложности
 
