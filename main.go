@@ -6,6 +6,24 @@ import (
 	"math/rand"
 )
 
+func hint(z int, num int) {
+
+	r := z - num
+
+	if r < 0 {
+		r = -r
+	}
+
+	switch {
+	case r <= 5:
+		fmt.Println("🔥 Горячо")
+	case r <= 15:
+		fmt.Println("🙂 Тепло")
+	default:
+		fmt.Println("❄️ Холодно")
+	}
+}
+
 func difficult(a *int) (int, error) {
 	switch *a {
 	case 1:
@@ -36,8 +54,10 @@ func play1() {
 		}
 		switch {
 		case z < num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком большое")
 		case z > num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
 			fmt.Println("Верно")
@@ -60,8 +80,10 @@ func play2() {
 
 		switch {
 		case z < num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком большое")
 		case z > num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
 			fmt.Println("Верно")
@@ -85,8 +107,10 @@ func play3() {
 
 		switch {
 		case z < num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком большое")
 		case z > num:
+			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
 			fmt.Println("Верно")
