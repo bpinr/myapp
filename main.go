@@ -1,11 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
+	"time"
 )
+
+type Result struct {
+	Date     string `json:"date"`
+	Result   string `json:"result"`
+	Attempts int    `json:"attempts"`
+}
 
 const (
 	Green  = "\033[32m"
@@ -13,6 +22,37 @@ const (
 	Red    = "\033[31m"
 	Reset  = "\033[0m"
 )
+
+func SaveResult(result string, attempts int) {
+	file, err := os.OpenFile(
+		"results.json",
+		os.O_CREATE|os.O_APPEND|os.O_WRONLY,
+		0644,
+	)
+
+	if err != nil {
+		fmt.Println("Ошибка открытия файла:", err)
+		return
+	}
+
+	defer file.Close()
+
+	data := Result{
+		Date:     time.Now().Format("2006-01-02 15:04:05"),
+		Result:   result,
+		Attempts: attempts,
+	}
+
+	jsonData, err := json.Marshal(data)
+
+	if err != nil {
+		fmt.Println("Ошибка создания JSON:", err)
+		return
+	}
+
+	file.Write(jsonData)
+	file.WriteString("\n")
+}
 
 func parseNumber(input string) (int, error) {
 	return strconv.Atoi(input)
@@ -82,6 +122,9 @@ func play1() {
 		case z == num:
 			fmt.Println(Green + "Верно" + Reset)
 			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+
+			SaveResult("win", i+1)
+
 			return
 		}
 
@@ -89,6 +132,8 @@ func play1() {
 	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
 	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 	fmt.Println("Ответ был: ", z)
+
+	SaveResult("lose", 15)
 
 }
 
@@ -119,12 +164,18 @@ func play2() {
 		case z == num:
 			fmt.Println(Green + "Верно" + Reset)
 			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+
+			SaveResult("win", i+1)
+
 			return
 		}
 	}
 	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
 	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 	fmt.Println("Ответ был: ", z)
+
+	SaveResult("lose", 10)
+
 }
 
 func play3() {
@@ -154,12 +205,18 @@ func play3() {
 		case z == num:
 			fmt.Println(Green + "Верно" + Reset)
 			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
+
+			SaveResult("win", i+1)
+
 			return
 		}
 	}
 	fmt.Println(Red + "Не угадал!Проигрыш" + Reset)
 	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 	fmt.Println("Ответ был: ", z)
+
+	SaveResult("lose", 5)
+
 }
 
 func main() {
