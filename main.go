@@ -4,7 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"strconv"
 )
+
+func parseNumber(input string) (int, error) {
+	return strconv.Atoi(input)
+}
 
 func hint(z int, num int) {
 
@@ -47,11 +52,18 @@ func play1() {
 	for i := 0; i < 15; i++ {
 
 		fmt.Println("Введите число")
-		var num int //число пользовтеля
-		_, err := fmt.Scan(&num)
+
+		var input string
+		fmt.Scan(&input)
+
+		num, err := parseNumber(input)
+
 		if err != nil {
-			return
+			fmt.Println("Ошибка. Введите целое число!")
+			i--
+			continue
 		}
+
 		switch {
 		case z < num:
 			hint(z, num)
@@ -72,10 +84,15 @@ func play2() {
 	fmt.Println("Начинается игра на уровне сложности 2. Количество попыток: 10")
 	for i := 0; i < 10; i++ {
 		fmt.Println("Введите число")
-		var num int //число пользовтеля
-		_, err := fmt.Scan(&num)
+
+		var input string
+		fmt.Scan(&input)
+
+		num, err := parseNumber(input)
 		if err != nil {
-			return
+			fmt.Println("Ошибка. Введите целое число!")
+			i--
+			continue
 		}
 
 		switch {
@@ -99,10 +116,15 @@ func play3() {
 
 	for i := 0; i < 5; i++ {
 		fmt.Println("Введите число")
-		var num int //число пользовтеля
-		_, err := fmt.Scan(&num)
+
+		var input string
+		fmt.Scan(&input)
+
+		num, err := parseNumber(input)
 		if err != nil {
-			return
+			fmt.Println("Ошибка. Введите целое число!")
+			i--
+			continue
 		}
 
 		switch {
@@ -114,23 +136,10 @@ func play3() {
 			fmt.Println("Введённое значение слишком маленькое")
 		case z == num:
 			fmt.Println("Верно")
+			return
 		}
 	}
 
-}
-
-func playGame(a *int) {
-	switch {
-	case *a == 1:
-		play1()
-		fmt.Println("Начинается игра на уровне сложности 1. Количество попыток: 15.")
-	case *a == 2:
-		play2()
-		fmt.Println("Начинается игра на уровне сложности 2. Количество попыток: 10. ")
-	case *a == 3:
-		play3()
-		fmt.Println("Начинается игра на уровне сложности 3. Количество попыток: 5. ")
-	}
 }
 
 func main() {
