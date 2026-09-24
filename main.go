@@ -27,6 +27,30 @@ func parseNumber(input string) (int, error) {
 	return strconv.Atoi(input)
 }
 
+// ввод числа
+func inputNumber() (int, error) {
+	var input string
+	fmt.Scan(&input)
+
+	return parseNumber(input)
+}
+
+// генерация числа
+func generateNumber(maxNumber int) int {
+	return rand.Intn(maxNumber) + 1
+}
+
+func compareNumbers(secret int, num int) int {
+	switch {
+	case num < secret:
+		return -1
+	case num > secret:
+		return 1
+	default:
+		return 0
+	}
+}
+
 func hint(z int, num int) {
 	r := z - num
 
@@ -44,26 +68,26 @@ func hint(z int, num int) {
 	}
 }
 
-func difficult(a *int) (int, error) {
-	switch *a {
+func difficult(a int) error {
+	switch a {
 	case 1:
 		playGame(50, 15, 1)
-		return 1, nil
+		return nil
 
 	case 2:
 		playGame(100, 10, 2)
-		return 2, nil
+		return nil
 
 	case 3:
 		playGame(200, 5, 3)
-		return 3, nil
+		return nil
 	}
 
-	return 0, errors.New("Введите верное число")
+	return errors.New("Введите верное число")
 }
 
 func playGame(maxNumber int, maxAttempts int, level int) {
-	z := rand.Intn(maxNumber + 1)
+	z := generateNumber(maxNumber)
 
 	fmt.Printf(
 		"Начинается игра на уровне сложности %d. Количество попыток: %d\n",
@@ -74,12 +98,18 @@ func playGame(maxNumber int, maxAttempts int, level int) {
 	var spisok []int
 
 	for i := 0; i < maxAttempts; i++ {
+
+		fmt.Printf(
+			"%sПопытка %d из %d%s\n",
+			Yellow,
+			i+1,
+			maxAttempts,
+			Reset,
+		)
+
 		fmt.Println(Yellow + "Введите число" + Reset)
 
-		var input string
-		fmt.Scan(&input)
-
-		num, err := parseNumber(input)
+		num, err := inputNumber()
 
 		if err != nil {
 			fmt.Println(Red + "Ошибка. Введите целое число!" + Reset)
@@ -89,16 +119,18 @@ func playGame(maxNumber int, maxAttempts int, level int) {
 
 		spisok = append(spisok, num)
 
-		switch {
-		case z < num:
+		result := compareNumbers(z, num)
+
+		switch result {
+		case 1:
 			hint(z, num)
 			fmt.Println("Введённое значение слишком большое")
 
-		case z > num:
+		case -1:
 			hint(z, num)
 			fmt.Println("Введённое значение слишком маленькое")
 
-		case z == num:
+		case 0:
 			fmt.Println(Green + "Верно!" + Reset)
 			fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 
@@ -108,7 +140,7 @@ func playGame(maxNumber int, maxAttempts int, level int) {
 		}
 	}
 
-	fmt.Println(Red + "He угадал! Проигрыш" + Reset)
+	fmt.Println(Red + "Не угадал! Проигрыш" + Reset)
 	fmt.Println(Yellow+"Вот твой список попыток:", spisok, Reset)
 	fmt.Println("Ответ был:", z)
 
@@ -148,16 +180,19 @@ func SaveResult(result string, attempts int) {
 
 func main() {
 	for {
-		var a int
-
 		fmt.Println("Выберите сложность:")
 		fmt.Println("🟢 Easy: 1 - 50, 15 попыток")
-		fmt.Println("🟡 Medium: 2 - 100, 10 попыток")
-		fmt.Println("🔴 Hard: 3 - 200, 5 попыток")
+		fmt.Println("🟡 Medium: 1 - 100, 10 попыток")
+		fmt.Println("🔴 Hard: 1 - 200, 5 попыток")
 
-		fmt.Scan(&a)
+		a, err := inputNumber()
 
-		_, err := difficult(&a)
+		if err != nil {
+			fmt.Println(Red + "Ошибка. Введите целое число!" + Reset)
+			continue
+		}
+
+		err = difficult(a)
 
 		if err != nil {
 			fmt.Println(err)
